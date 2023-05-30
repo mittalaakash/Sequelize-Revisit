@@ -1,8 +1,35 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('./index');
 
-const User = sequelize.define(
-  'User',
+// const User = sequelize.define(
+//   'User',
+//   {
+//     // Model attributes are defined here
+//     firstName: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//     lastName: {
+//       type: DataTypes.STRING,
+//       //allowNull defaults to true
+//     },
+//     middleName: {
+//       type: DataTypes.STRING,
+//       //allowNull defaults to true
+//     },
+//   },
+//   {
+//     //other model options
+//     tableName: 'users',
+//     // timestamps: false,//remove updatedAt and createdAt both
+//     updatedAt: true,
+//     createdAt: false,
+//   },
+// );
+
+class User extends Model {}
+
+User.init(
   {
     // Model attributes are defined here
     firstName: {
@@ -11,17 +38,16 @@ const User = sequelize.define(
     },
     lastName: {
       type: DataTypes.STRING,
-      //allowNull defaults to true
-    },
-    middleName: {
-      type: DataTypes.STRING,
-      //allowNull defaults to true
+      defaultValue: 'sharma',
+      // allowNull defaults to true
     },
   },
   {
-    //other model options
+    // Other model options go here
+    sequelize, // We need to pass the connection instance
+    modelName: 'User', // We need to choose the model name
     tableName: 'users',
-    // timestamps: false,//remove updatedAt and createdAt both
+    //     // timestamps: false,//remove updatedAt and createdAt both
     updatedAt: true,
     createdAt: false,
   },
