@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, DataTypes, Model } = require('sequelize');
 
 //connection for pgsql
 // const sequelize = new Sequelize('employeeDB', 'postgres', 'hello', {
@@ -10,6 +10,7 @@ const { Sequelize } = require('sequelize');
 //connection for mysql
 const sequelize = new Sequelize('employeeDB', 'root', 'admin', {
   host: 'localhost',
+  logging: false,
   dialect: 'mysql',
 });
 
@@ -22,4 +23,13 @@ sequelize
     console.error('Unable to connect to the database:', error);
   });
 
-module.exports = sequelize;
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+db.contact = require('./contact')(sequelize, DataTypes);
+db.user = require('./user')(sequelize, DataTypes, Model);
+
+db.sequelize.sync({ force: true });
+
+module.exports = db;

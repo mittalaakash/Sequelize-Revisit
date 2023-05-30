@@ -1,6 +1,3 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('./index');
-
 // const User = sequelize.define(
 //   'User',
 //   {
@@ -26,34 +23,35 @@ const sequelize = require('./index');
 //     createdAt: false,
 //   },
 // );
+module.exports = (sequelize, DataTypes, Model) => {
+  class User extends Model {}
 
-class User extends Model {}
-
-User.init(
-  {
-    // Model attributes are defined here
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
+  User.init(
+    {
+      // Model attributes are defined here
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        defaultValue: 'sharma',
+        // allowNull defaults to true
+      },
     },
-    lastName: {
-      type: DataTypes.STRING,
-      defaultValue: 'sharma',
-      // allowNull defaults to true
+    {
+      // Other model options go here
+      sequelize, // We need to pass the connection instance
+      modelName: 'User', // We need to choose the model name
+      tableName: 'users',
+      //     // timestamps: false,//remove updatedAt and createdAt both
+      updatedAt: true,
+      createdAt: false,
     },
-  },
-  {
-    // Other model options go here
-    sequelize, // We need to pass the connection instance
-    modelName: 'User', // We need to choose the model name
-    tableName: 'users',
-    //     // timestamps: false,//remove updatedAt and createdAt both
-    updatedAt: true,
-    createdAt: false,
-  },
-);
+  );
 
-// `sequelize.define` also returns the model
-console.log(User === sequelize.models.User); // true
+  return User;
 
-module.exports = User;
+  // `sequelize.define` also returns the model
+  // console.log(User === sequelize.models.User); // true
+};
