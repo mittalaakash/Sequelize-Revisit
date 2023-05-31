@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const userController = require('./controllers/userController');
 
 // const User = require('./models/user');
 // const Contact = require('./models/contact');
 //removing above imports and requiring only model/index file
-require('./models');
+// require('./models');
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.get('/', (req, res) => {
   text-transform:uppercase;
 ">hello world</h1>`);
 });
+
+app.get('/add', userController.addUser);
 
 // User.sync({ force: true });
 // Contact.sync({ force: true });
