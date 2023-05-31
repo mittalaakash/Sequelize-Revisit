@@ -21,6 +21,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/add', userController.addUser);
+app.get('/users/:id', userController.getUser);
+app.get('/users', userController.getUsers);
+app.post('/users', userController.postUsers);
+app.delete('/users/:id', userController.deleteUser);
+app.patch('/users/:id', userController.updateUser);
 
 // User.sync({ force: true });
 // Contact.sync({ force: true });
