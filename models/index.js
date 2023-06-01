@@ -1,9 +1,10 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 
-//connection for pgsql
+// // connection for pgsql
 // const sequelize = new Sequelize('employeeDB', 'postgres', 'hello', {
 //   host: 'localhost',
 //   port: 5433,
+//   logging: false,
 //   dialect: 'postgres',
 // });
 

@@ -1,4 +1,4 @@
-const { isAbsolute } = require('path');
+const { Sequelize } = require('sequelize');
 const db = require('../models/index');
 const { isArray } = require('util');
 
@@ -53,7 +53,6 @@ const deleteUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const userId = req.params.id;
   const userData = req.body;
   const data = await User.update(userData, {
     where: {
@@ -64,6 +63,17 @@ const updateUser = async (req, res) => {
   res.status(200).json({ data });
 };
 
+const queryUser = async (req, res) => {
+  const data = await User.findAll({
+    attributes: [
+      'firstName',
+      [db.sequelize.fn('SUM', db.sequelize.col('id')), 'length'],
+    ],
+    group: 'firstName',
+  });
+  res.status(200).json({ data: data });
+};
+
 module.exports = {
   addUser,
   getUser,
@@ -71,4 +81,5 @@ module.exports = {
   postUsers,
   deleteUser,
   updateUser,
+  queryUser,
 };

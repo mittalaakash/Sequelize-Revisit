@@ -38,6 +38,11 @@ module.exports = (sequelize, DataTypes, Model) => {
         defaultValue: 'sharma',
         // allowNull defaults to true
       },
+      age: {
+        type: DataTypes.INTEGER,
+        defaultValue: 18,
+        // allowNull defaults to true
+      },
     },
     {
       // Other model options go here
