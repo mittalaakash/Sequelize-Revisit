@@ -67,7 +67,7 @@ const queryUser = async (req, res) => {
   const data = await User.findAll({
     attributes: [
       'firstName',
-      [db.sequelize.fn('SUM', db.sequelize.col('id')), 'length'],
+      [db.sequelize.fn('COUNT', db.sequelize.col('firstName')), 'count'],
     ],
     group: 'firstName',
   });

@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes, Model) => {
       // Model attributes are defined here
       firstName: {
         type: DataTypes.STRING,
+        get() {
+          const rawValue = this.getDataValue('firstName');
+          return rawValue ? rawValue.toUpperCase() : null;
+        },
         allowNull: false,
       },
       lastName: {
