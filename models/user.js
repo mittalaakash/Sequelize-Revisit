@@ -1,28 +1,33 @@
-// const User = sequelize.define(
-//   'User',
-//   {
-//     // Model attributes are defined here
-//     firstName: {
-//       type: DataTypes.STRING,
-//       allowNull: false,
+// module.exports = (sequelize, DataTypes, Model) => {
+//   return sequelize.define(
+//     'User',
+//     {
+//       // Model attributes are defined here
+//       firstName: {
+//         type: DataTypes.STRING,
+//         allowNull: false,
+//         validate: {
+//           isAlpha: true,
+//         },
+//       },
+//       lastName: {
+//         type: DataTypes.STRING,
+//         //allowNull defaults to true
+//       },
+//       middleName: {
+//         type: DataTypes.STRING,
+//         //allowNull defaults to true
+//       },
 //     },
-//     lastName: {
-//       type: DataTypes.STRING,
-//       //allowNull defaults to true
+//     {
+//       //other model options
+//       tableName: 'users',
+//       // timestamps: false,//remove updatedAt and createdAt both
+//       updatedAt: true,
+//       createdAt: false,
 //     },
-//     middleName: {
-//       type: DataTypes.STRING,
-//       //allowNull defaults to true
-//     },
-//   },
-//   {
-//     //other model options
-//     tableName: 'users',
-//     // timestamps: false,//remove updatedAt and createdAt both
-//     updatedAt: true,
-//     createdAt: false,
-//   },
-// );
+//   );
+// };
 module.exports = (sequelize, DataTypes, Model) => {
   class User extends Model {}
 
@@ -36,6 +41,9 @@ module.exports = (sequelize, DataTypes, Model) => {
           return rawValue ? rawValue.toUpperCase() : null;
         },
         allowNull: false,
+        validate: {
+          isAlpha: true,
+        },
       },
       lastName: {
         type: DataTypes.STRING,

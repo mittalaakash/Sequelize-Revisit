@@ -32,12 +32,16 @@ const getUsers = async (req, res) => {
 const postUsers = async (req, res) => {
   const postBody = req.body;
   let data;
-  if (isArray(postBody) && postBody.length > 0) {
-    data = await User.bulkCreate(postBody);
-  } else if (isArray(postBody) && postBody.length == 0)
-    return res.status(200).json({ message: 'no data present' });
-  else {
-    data = await User.create(postBody);
+  try {
+    if (isArray(postBody) && postBody.length > 0) {
+      data = await User.bulkCreate(postBody);
+    } else if (isArray(postBody) && postBody.length == 0)
+      return res.status(200).json({ message: 'no data present' });
+    else {
+      data = await User.create(postBody);
+    }
+  } catch (error) {
+    console.log(error);
   }
   res.status(200).json({ data: data });
 };
