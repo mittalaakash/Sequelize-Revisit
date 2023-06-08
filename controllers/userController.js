@@ -71,9 +71,9 @@ const queryUser = async (req, res) => {
   const data = await User.findAll({
     attributes: [
       'firstName',
-      [db.sequelize.fn('COUNT', db.sequelize.col('firstName')), 'count'],
+      [db.sequelize.fn('COUNT', db.sequelize.col('id')), 'count'],
     ],
-    group: 'firstName',
+    group: 'id',
   });
   res.status(200).json({ data: data });
 };

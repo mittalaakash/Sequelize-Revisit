@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes, Model) => {
       firstName: {
         type: DataTypes.STRING,
         get() {
+          //getter
           const rawValue = this.getDataValue('firstName');
           return rawValue ? rawValue.toUpperCase() : null;
         },
@@ -48,7 +49,18 @@ module.exports = (sequelize, DataTypes, Model) => {
       lastName: {
         type: DataTypes.STRING,
         defaultValue: 'sharma',
+        //setter
+        set(value) {
+          this.setDataValue('lastName', `${value} singh`);
+        },
+
         // allowNull defaults to true
+      },
+      fullName: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return this.firstName + ' ' + this.lastName;
+        },
       },
       age: {
         type: DataTypes.INTEGER,
