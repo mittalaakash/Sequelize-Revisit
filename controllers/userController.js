@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { QueryTypes } = require('sequelize');
 const db = require('../models/index');
 const { isArray } = require('util');
 
@@ -93,12 +93,10 @@ const updateUser = async (req, res) => {
 };
 
 const queryUser = async (req, res) => {
-  const data = await User.findAll({
-    attributes: [
-      'firstName',
-      [db.sequelize.fn('COUNT', db.sequelize.col('id')), 'count'],
-    ],
-    group: 'id',
+  const data = await db.sequelize.query('SELECT * FROM `users`', {
+    type: QueryTypes.SELECT,
+    model: User, //used when we have to use Model definition
+    mapToModel: true, //if mapped fields are present
   });
   res.status(200).json({ data: data });
 };
