@@ -42,8 +42,16 @@ module.exports = (sequelize, DataTypes, Model) => {
           return rawValue ? rawValue.toUpperCase() : null;
         },
         allowNull: false,
+        unique: true,
         validate: {
           isAlpha: true,
+          isLowercase: {
+            msg: 'only lower case letters allowed peace out',
+          },
+          len: {
+            args: [2, 10],
+            msg: 'should be 2 to 10 characters in length peace out',
+          },
         },
       },
       lastName: {
@@ -73,6 +81,7 @@ module.exports = (sequelize, DataTypes, Model) => {
       sequelize, // We need to pass the connection instance
       modelName: 'User', // We need to choose the model name
       tableName: 'users',
+      underscored: true,
       //     // timestamps: false,//remove updatedAt and createdAt both
       updatedAt: true,
       createdAt: false,

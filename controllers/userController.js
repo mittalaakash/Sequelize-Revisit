@@ -5,16 +5,17 @@ const { isArray } = require('util');
 const User = db.user;
 
 const addUser = async (req, res) => {
-  //   const jane = User.build({ firstName: 'Robin' });
-  const jane = await User.create({ firstName: 'Raman' });
+  const jane = User.build({ firstName: 'Robins' });
+  // const jane = await User.create({ firstName: 'Rome' });
 
-  jane.firstName = 'kill';
+  // jane.firstName = 'kill';
   //still the name in DB is Raman
-  jane.set({ lastName: 'bill' });
+  // jane.set({ lastName: 'bill' });
   //   await jane.reload();
   await jane.save(); // now the name in DB is kill
   console.log('jane was saved to DB');
-  res.status(200).json(jane.toJSON());
+  console.log(jane.toJSON());
+  res.status(200).json({ data: jane.toJSON() });
 };
 
 const getUser = async (req, res) => {
@@ -32,6 +33,7 @@ const getUsers = async (req, res) => {
 const postUsers = async (req, res) => {
   const postBody = req.body;
   let data;
+  let messages = {};
   try {
     if (isArray(postBody) && postBody.length > 0) {
       data = await User.bulkCreate(postBody);
@@ -40,10 +42,33 @@ const postUsers = async (req, res) => {
     else {
       data = await User.create(postBody);
     }
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    let message;
+
+    e.errors.forEach(error => {
+      console.log(error);
+      switch (error.validatorKey) {
+        case 'not_unique':
+          message = 'Already exists';
+          break;
+        case 'isAlpha':
+          message = 'only alphabets are allowed';
+          break;
+        case 'isLowercase':
+          message = error.message || 'only lower case letters allowed'; //error.message from model definition
+          break;
+        case 'len':
+          message = error.message || 'should be 2 to 10 characters in length';
+          break;
+
+        default:
+          break;
+      }
+      console.log({ message: error.validatorKey });
+      messages[error.path] = message;
+    });
   }
-  res.status(200).json({ data: data });
+  res.status(200).json({ data: data, message: messages });
 };
 
 const deleteUser = async (req, res) => {
