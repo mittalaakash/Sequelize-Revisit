@@ -29,6 +29,7 @@ app.patch('/users/:id', userController.updateUser);
 app.get('/query', userController.queryUser);
 app.get('/one-to-one', userController.oneToOneUser);
 app.get('/one-to-many', userController.oneToManyUser);
+app.get('/many-to-many', userController.manyToManyUser);
 
 // User.sync({ force: true });
 // Contact.sync({ force: true });

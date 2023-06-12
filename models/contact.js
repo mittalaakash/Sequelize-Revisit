@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Contact = sequelize.define(
-    'Contact',
+    'contacts',
     {
       // Model attributes are defined here
       permanentAddress: {
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: 'contacts',
+      // tableName: 'contacts',
       // Other model options go here
     },
   );

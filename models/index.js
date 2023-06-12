@@ -35,6 +35,15 @@ db.contact = require('./contact')(sequelize, DataTypes);
 db.user.hasMany(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
 db.contact.belongsTo(db.user, { foreignKey: 'userId', as: 'userDetails' });
 
+db.user.belongsToMany(db.contact, {
+  through: 'user_contacts',
+  unique: false,
+});
+db.contact.belongsToMany(db.user, {
+  through: 'user_contacts',
+  unique: false,
+});
+
 db.sequelize.sync({ force: false });
 // db.sequelize.drop();
 

@@ -117,9 +117,9 @@ const oneToOneUser = async (req, res) => {
 
   // if (data && data.id) {
   //   await Contact.create({
-  //     userId: data.id,
-  //     permanentAddress: 'cxyz',
-  //     currentAddress: 'abc',
+  //     // userId: data.id,
+  //     permanentAddress: 'jaipur',
+  //     currentAddress: 'kota',
   //   });
   // }
 
@@ -174,6 +174,38 @@ const oneToManyUser = async (req, res) => {
 
   res.status(200).json({ data });
 };
+const manyToManyUser = async (req, res) => {
+  // const data = await User.create({ firstName: 'anup', lastName: 'aman' });
+
+  // if (data && data.id) {
+  //   await Contact.create({
+  //     permanentAddress: 'UP',
+  //     currentAddress: 'noida',
+  //   });
+  // }
+
+  // const data = await User.findAll({
+  //   attributes: ['firstName', 'lastName'],
+  //   include: [
+  //     {
+  //       model: Contact,
+  //       attributes: ['permanentAddress', 'currentAddress'],
+  //     },
+  //   ],
+  // });
+
+  const data = await Contact.findAll({
+    attributes: ['permanentAddress', 'currentAddress'],
+    include: [
+      {
+        model: User,
+        attributes: ['firstName', 'lastName'],
+      },
+    ],
+  });
+
+  res.status(200).json({ data });
+};
 
 module.exports = {
   addUser,
@@ -185,4 +217,5 @@ module.exports = {
   queryUser,
   oneToOneUser,
   oneToManyUser,
+  manyToManyUser,
 };
