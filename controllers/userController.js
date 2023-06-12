@@ -175,34 +175,34 @@ const oneToManyUser = async (req, res) => {
   res.status(200).json({ data });
 };
 const manyToManyUser = async (req, res) => {
-  // const data = await User.create({ firstName: 'anup', lastName: 'aman' });
+  // const data = await User.create({ firstName: 'anyu', lastName: 'gup' });
 
   // if (data && data.id) {
   //   await Contact.create({
-  //     permanentAddress: 'UP',
-  //     currentAddress: 'noida',
+  //     permanentAddress: 'JK',
+  //     currentAddress: 'AP',
   //   });
   // }
 
-  // const data = await User.findAll({
-  //   attributes: ['firstName', 'lastName'],
-  //   include: [
-  //     {
-  //       model: Contact,
-  //       attributes: ['permanentAddress', 'currentAddress'],
-  //     },
-  //   ],
-  // });
-
-  const data = await Contact.findAll({
-    attributes: ['permanentAddress', 'currentAddress'],
+  const data = await User.findAll({
+    attributes: ['firstName', 'lastName'],
     include: [
       {
-        model: User,
-        attributes: ['firstName', 'lastName'],
+        model: Contact,
+        attributes: ['permanentAddress', 'currentAddress'],
       },
     ],
   });
+
+  // const data = await Contact.findAll({
+  //   attributes: ['permanentAddress', 'currentAddress'],
+  //   include: [
+  //     {
+  //       model: User,
+  //       attributes: ['firstName', 'lastName'],
+  //     },
+  //   ],
+  // });
 
   res.status(200).json({ data });
 };

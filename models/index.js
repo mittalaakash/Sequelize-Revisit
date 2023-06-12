@@ -30,6 +30,12 @@ db.sequelize = sequelize;
 
 db.user = require('./user')(sequelize, DataTypes, Model);
 db.contact = require('./contact')(sequelize, DataTypes);
+db.userContact = require('./userContacts')(
+  sequelize,
+  DataTypes,
+  db.user,
+  db.contact,
+);
 
 // db.user.hasOne(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
 db.user.hasMany(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
@@ -37,11 +43,11 @@ db.contact.belongsTo(db.user, { foreignKey: 'userId', as: 'userDetails' });
 
 db.user.belongsToMany(db.contact, {
   through: 'user_contacts',
-  unique: false,
+  foreignKey: 'userId',
 });
 db.contact.belongsToMany(db.user, {
   through: 'user_contacts',
-  unique: false,
+  // foreignKey: 'contactId',
 });
 
 db.sequelize.sync({ force: false });
