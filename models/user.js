@@ -81,7 +81,7 @@ module.exports = (sequelize, DataTypes, Model) => {
       sequelize, // We need to pass the connection instance
       modelName: 'User', // We need to choose the model name
       tableName: 'users',
-      underscored: true,
+      // underscored: true,
       //     // timestamps: false,//remove updatedAt and createdAt both
       updatedAt: true,
       createdAt: false,

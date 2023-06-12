@@ -28,9 +28,13 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.contact = require('./contact')(sequelize, DataTypes);
 db.user = require('./user')(sequelize, DataTypes, Model);
+db.contact = require('./contact')(sequelize, DataTypes);
+
+db.user.hasOne(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
+db.contact.belongsTo(db.user, { foreignKey: 'userId', as: 'userDetails' });
 
 db.sequelize.sync({ force: false });
+// db.sequelize.drop();
 
 module.exports = db;

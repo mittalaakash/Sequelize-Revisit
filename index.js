@@ -27,6 +27,7 @@ app.post('/users', userController.postUsers);
 app.delete('/users/:id', userController.deleteUser);
 app.patch('/users/:id', userController.updateUser);
 app.get('/query', userController.queryUser);
+app.get('/one-to-one', userController.oneToOneUser);
 
 // User.sync({ force: true });
 // Contact.sync({ force: true });

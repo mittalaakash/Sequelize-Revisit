@@ -3,6 +3,7 @@ const db = require('../models/index');
 const { isArray } = require('util');
 
 const User = db.user;
+const Contact = db.contact;
 
 const addUser = async (req, res) => {
   const jane = User.build({ firstName: 'Robins' });
@@ -111,6 +112,43 @@ const queryUser = async (req, res) => {
   res.status(200).json({ data: data });
 };
 
+const oneToOneUser = async (req, res) => {
+  // const data = await User.create({ firstName: 'rahul', lastName: 'kumar' });
+
+  // if (data && data.id) {
+  //   await Contact.create({
+  //     userId: data.id,
+  //     permanentAddress: 'cxyz',
+  //     currentAddress: 'abc',
+  //   });
+  // }
+
+  //fetching contact inside user
+  const data = await User.findAll({
+    attributes: ['firstName', 'lastName'],
+    include: [
+      {
+        model: Contact,
+        as: 'contactDetails',
+        attributes: ['permanentAddress', 'currentAddress'],
+      },
+    ],
+  });
+
+  //fetching user inside contact
+  // const data = await Contact.findAll({
+  //   attributes: ['permanentAddress', 'currentAddress'],
+  //   include: [
+  //     {
+  //       model: User,
+  //       as: 'userDetails',
+  //       attributes: ['firstName', 'lastName'],
+  //     },
+  //   ],
+  // });
+  res.status(200).json({ data });
+};
+
 module.exports = {
   addUser,
   getUser,
@@ -119,4 +157,5 @@ module.exports = {
   deleteUser,
   updateUser,
   queryUser,
+  oneToOneUser,
 };
