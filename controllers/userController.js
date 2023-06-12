@@ -149,6 +149,32 @@ const oneToOneUser = async (req, res) => {
   res.status(200).json({ data });
 };
 
+const oneToManyUser = async (req, res) => {
+  // const data = await User.findAll({
+  //   attributes: ['firstName', 'lastName'],
+  //   include: [
+  //     {
+  //       model: Contact,
+  //       as: 'contactDetails',
+  //       attributes: ['permanentAddress', 'currentAddress'],
+  //     },
+  //   ],
+  // });
+
+  const data = await Contact.findAll({
+    attributes: ['permanentAddress', 'currentAddress'],
+    include: [
+      {
+        model: User,
+        as: 'userDetails',
+        attributes: ['firstName', 'lastName'],
+      },
+    ],
+  });
+
+  res.status(200).json({ data });
+};
+
 module.exports = {
   addUser,
   getUser,
@@ -158,4 +184,5 @@ module.exports = {
   updateUser,
   queryUser,
   oneToOneUser,
+  oneToManyUser,
 };
