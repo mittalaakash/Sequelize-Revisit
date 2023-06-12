@@ -93,11 +93,21 @@ const updateUser = async (req, res) => {
 };
 
 const queryUser = async (req, res) => {
-  const data = await db.sequelize.query('SELECT * FROM `users`', {
-    type: QueryTypes.SELECT,
-    model: User, //used when we have to use Model definition
-    mapToModel: true, //if mapped fields are present
-  });
+  // const data = await db.sequelize.query('SELECT * FROM `users`', {
+  //   type: QueryTypes.SELECT,
+  //   model: User, //used when we have to use Model definition
+  //   mapToModel: true, //if mapped fields are present
+  //   raw: false, //true: if we don't have model definition
+  // });
+  const data = await db.sequelize.query(
+    'SELECT * FROM users WHERE first_name LIKE :search_name',
+    {
+      replacements: { search_name: 'ss%' },
+      model: User, //used when we have to use Model definition
+      mapToModel: true, //if mapped fields are present
+      raw: false, //true: if we don't have model definition
+    },
+  );
   res.status(200).json({ data: data });
 };
 
