@@ -4,6 +4,7 @@ const { isArray } = require('util');
 
 const User = db.user;
 const Contact = db.contact;
+const Education = db.education;
 
 const addUser = async (req, res) => {
   const jane = User.build({ firstName: 'Robins' });
@@ -23,11 +24,30 @@ const getUser = async (req, res) => {
   const data = await User.findOne({
     where: { id: req.params.id },
   });
+  // const contact = await data.getContactDetails(); //  lazy loading
+  // console.log(contact.permanentAddress);
   res.status(200).json({ data: data });
 };
 
 const getUsers = async (req, res) => {
-  const data = await User.findAll({});
+  const data = await User.findAll({
+    // include: { all: true }, fetches all User associated models
+    include: {
+      model: Contact,
+      as: 'contactDetails',
+      // where: { permanentAddress: 'asdf' },
+    },
+    //   [
+    //   //nested eager loading
+    //   {
+    //     model: Contact,
+    //     as: 'contactDetails',
+    //     // include: {
+    //     //   model: Education,
+    //     // },
+    //   },
+    // ],
+  });
   res.status(200).json({ data: data });
 };
 
@@ -42,6 +62,13 @@ const postUsers = async (req, res) => {
       return res.status(200).json({ message: 'no data present' });
     else {
       data = await User.create(postBody);
+      if (data && data.id) {
+        await Contact.create({
+          userId: data.id,
+          permanentAddress: postBody.firstName,
+          currentAddress: postBody.lastName,
+        });
+      }
     }
   } catch (e) {
     let message;

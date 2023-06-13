@@ -1,17 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
-  const Contact = sequelize.define(
-    'Contact',
+  const Education = sequelize.define(
+    'Education',
     {
       // Model attributes are defined here
-      permanentAddress: {
+      class: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      currentAddress: {
+      grade: {
         type: DataTypes.STRING,
         // allowNull defaults to true
       },
-      userId: {
+      passingYear: {
+        type: DataTypes.INTEGER,
+      },
+      contactId: {
         type: DataTypes.INTEGER,
       },
     },
@@ -25,5 +28,5 @@ module.exports = (sequelize, DataTypes) => {
   // `sequelize.define` also returns the model
   // console.log(Contact === sequelize.models.Contact); // true
 
-  return Contact;
+  return Education;
 };

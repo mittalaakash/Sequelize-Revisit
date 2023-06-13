@@ -80,10 +80,11 @@ module.exports = (sequelize, DataTypes, Model) => {
       // Other model options go here
       sequelize, // We need to pass the connection instance
       modelName: 'User', // We need to choose the model name
+      paranoid: true,
       tableName: 'users',
       // underscored: true,
-      //     // timestamps: false,//remove updatedAt and createdAt both
-      updatedAt: true,
+      // timestamps: false, //remove updatedAt and createdAt both
+      updatedAt: false,
       createdAt: false,
     },
   );

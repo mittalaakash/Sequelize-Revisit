@@ -2,14 +2,14 @@ module.exports = (sequelize, DataTypes, User, Contact) => {
   const userContacts = sequelize.define(
     'user_contacts',
     {
-      userId: {
+      UserId: {
         type: DataTypes.INTEGER,
         references: {
           model: User,
           key: 'id',
         },
       },
-      contactId: {
+      ContactId: {
         type: DataTypes.INTEGER,
         references: {
           model: Contact,

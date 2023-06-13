@@ -30,26 +30,30 @@ db.sequelize = sequelize;
 
 db.user = require('./user')(sequelize, DataTypes, Model);
 db.contact = require('./contact')(sequelize, DataTypes);
-db.userContact = require('./userContacts')(
-  sequelize,
-  DataTypes,
-  db.user,
-  db.contact,
-);
+db.education = require('./education')(sequelize, DataTypes);
+// db.userContact = require('./userContacts')(
+//   sequelize,
+//   DataTypes,s
+//   db.user,
+//   db.contact,
+// );
 
 // db.user.hasOne(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
 db.user.hasMany(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
 db.contact.belongsTo(db.user, { foreignKey: 'userId', as: 'userDetails' });
+// db.contact.hasOne(db.education, { foreignKey: 'contactId' });
+// db.education.belongsTo(db.contact, { foreignKey: 'contactId' });
 
-db.user.belongsToMany(db.contact, {
-  through: 'user_contacts',
-  foreignKey: 'userId',
-});
-db.contact.belongsToMany(db.user, {
-  through: 'user_contacts',
-  // foreignKey: 'contactId',
-});
+// db.user.belongsToMany(db.contact, {
+//   through: 'user_contacts',
+//   // foreignKey: 'userId',
+// });
+// db.contact.belongsToMany(db.user, {
+//   through: 'user_contacts',
+//   // foreignKey: 'contactId',
+// });
 
+// db.sequelize.drop();
 db.sequelize.sync({ force: false });
 // db.sequelize.drop();
 
