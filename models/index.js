@@ -28,9 +28,18 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+const User_Profile = sequelize.define(
+  'User_Profile',
+  { selfGranted: DataTypes.BOOLEAN },
+  { timestamps: false },
+);
+
 db.user = require('./user')(sequelize, DataTypes, Model);
 db.contact = require('./contact')(sequelize, DataTypes);
 db.education = require('./education')(sequelize, DataTypes);
+db.customer = require('./customer')(sequelize, DataTypes);
+db.profile = require('./profile')(sequelize, DataTypes);
+
 // db.userContact = require('./userContacts')(
 //   sequelize,
 //   DataTypes,s
@@ -38,11 +47,17 @@ db.education = require('./education')(sequelize, DataTypes);
 //   db.contact,
 // );
 
-// db.user.hasOne(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
-db.user.hasMany(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
-db.contact.belongsTo(db.user, { foreignKey: 'userId', as: 'userDetails' });
-// db.contact.hasOne(db.education, { foreignKey: 'contactId' });
-// db.education.belongsTo(db.contact, { foreignKey: 'contactId' });
+db.user.hasOne(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
+// db.user.hasMany(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
+db.userContact = db.contact.belongsTo(db.user, {
+  foreignKey: 'userId',
+  as: 'users',
+});
+db.contact.hasOne(db.education, { foreignKey: 'contactId' });
+db.education.belongsTo(db.contact, { foreignKey: 'contactId' });
+
+db.customer.belongsToMany(db.profile, { through: 'User_Profile' });
+db.profile.belongsToMany(db.customer, { through: 'User_Profile' });
 
 // db.user.belongsToMany(db.contact, {
 //   through: 'user_contacts',
@@ -52,9 +67,7 @@ db.contact.belongsTo(db.user, { foreignKey: 'userId', as: 'userDetails' });
 //   through: 'user_contacts',
 //   // foreignKey: 'contactId',
 // });
-
-// db.sequelize.drop();
-db.sequelize.sync({ force: false });
+db.sequelize.sync({ force: true });
 // db.sequelize.drop();
 
 module.exports = db;

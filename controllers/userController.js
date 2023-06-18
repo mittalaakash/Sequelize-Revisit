@@ -234,6 +234,33 @@ const manyToManyUser = async (req, res) => {
   res.status(200).json({ data });
 };
 
+const creator = async (req, res) => {
+  const data = await Contact.create(
+    {
+      permanentAddress: 'abc',
+      currentAddress: 'efg',
+      users: {
+        firstName: 'hello',
+        lastName: 'kumar',
+      },
+    },
+    { include: [db.userContact] },
+  );
+  res.status(200).json({ data });
+};
+
+const m_n_association = async (req, res) => {
+  const amidala = await db.customer.create({ username: 'p4dm3', points: 1000 });
+  const queen = await db.profile.create({ name: 'Queen' });
+  await amidala.addProfile(queen, { through: { selfGranted: false } });
+  const result = await db.customer.findOne({
+    where: { username: 'p4dm3' },
+    include: db.profile,
+  });
+
+  res.status(200).json({ data: result });
+};
+
 module.exports = {
   addUser,
   getUser,
@@ -245,4 +272,6 @@ module.exports = {
   oneToOneUser,
   oneToManyUser,
   manyToManyUser,
+  creator,
+  m_n_association,
 };
