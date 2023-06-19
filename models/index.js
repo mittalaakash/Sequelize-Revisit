@@ -49,15 +49,16 @@ db.profile = require('./profile')(sequelize, DataTypes);
 
 db.user.hasOne(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
 // db.user.hasMany(db.contact, { foreignKey: 'userId', as: 'contactDetails' });
-db.userContact = db.contact.belongsTo(db.user, {
+db.contact.belongsTo(db.user, {
   foreignKey: 'userId',
   as: 'users',
+  allowNull: false,
 });
-db.contact.hasOne(db.education, { foreignKey: 'contactId' });
-db.education.belongsTo(db.contact, { foreignKey: 'contactId' });
+// db.contact.hasOne(db.education, { foreignKey: 'contactId' });
+// db.education.belongsTo(db.contact, { foreignKey: 'contactId' });
 
-db.customer.belongsToMany(db.profile, { through: 'User_Profile' });
-db.profile.belongsToMany(db.customer, { through: 'User_Profile' });
+// db.customer.belongsToMany(db.profile, { through: 'User_Profile' });
+// db.profile.belongsToMany(db.customer, { through: 'User_Profile' });
 
 // db.user.belongsToMany(db.contact, {
 //   through: 'user_contacts',
@@ -67,7 +68,26 @@ db.profile.belongsToMany(db.customer, { through: 'User_Profile' });
 //   through: 'user_contacts',
 //   // foreignKey: 'contactId',
 // });
-db.sequelize.sync({ force: true });
+// db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0').then(() => {
+//   db.sequelize.sync({ force: true });
+// });
 // db.sequelize.drop();
+
+db.sequelize
+  .query('SET FOREIGN_KEY_CHECKS = 0')
+  .then(function () {
+    return db.sequelize.sync({ force: false });
+  })
+  .then(function () {
+    return db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+  })
+  .then(
+    function () {
+      console.log('Database synchronised.');
+    },
+    function (err) {
+      console.log(err);
+    },
+  );
 
 module.exports = db;

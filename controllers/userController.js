@@ -261,6 +261,31 @@ const m_n_association = async (req, res) => {
   res.status(200).json({ data: result });
 };
 
+const transaction = async (req, res) => {
+  const t = await db.sequelize.transaction();
+  let user;
+  try {
+    user = await db.user.create(
+      {
+        firstName: 'hedukj',
+        lastName: 'kumar',
+      },
+      { transaction: t },
+    );
+    await user.createContactDetails(
+      { permanentAddress: 'null', currentAddress: 'efg' },
+      { transaction: t },
+    );
+    t.commit();
+    console.log('commit');
+  } catch (error) {
+    t.rollback();
+    console.log('rollback', error.message);
+  }
+
+  res.status(200).json({ data: user });
+};
+
 module.exports = {
   addUser,
   getUser,
@@ -274,4 +299,5 @@ module.exports = {
   manyToManyUser,
   creator,
   m_n_association,
+  transaction,
 };

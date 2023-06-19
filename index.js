@@ -32,6 +32,7 @@ app.get('/one-to-many', userController.oneToManyUser);
 app.get('/many-to-many', userController.manyToManyUser);
 app.get('/creator', userController.creator);
 app.get('/m_n_association', userController.m_n_association);
+app.get('/transaction', userController.transaction);
 
 // User.sync({ force: true });
 // Contact.sync({ force: true });
